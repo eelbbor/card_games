@@ -42,10 +42,8 @@ class CardTest extends BaseTest {
 
   test(s"$TestIdentifier: should sort by suite then by value.") {
     val numCardsPerSuite = 13
-
-    val cards: List[Card] = Random.shuffle(Suite.values.toList.flatMap(
-      (suite: Suite.Value) => (1 to numCardsPerSuite).
-        map((ordinal: Int) => Card(suite, FaceValue(ordinal, ordinal.toString))).toList))
+    val cards: List[Card] =
+      Random.shuffle(Utils.createSetOfCardsForAllSuites(1 to numCardsPerSuite))
     assertEquals(4 * numCardsPerSuite, cards.size)
 
     assertTrue(s"Should have multiple sets in the first $numCardsPerSuite cards.",
