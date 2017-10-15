@@ -7,7 +7,7 @@ import org.junit.Assert.{assertEquals, assertTrue}
   * @author Robb Lee (robbmlee@gmail.com).
   */
 class FaceValueTest extends BaseTest {
-  private val TestIdentifier = "FaceValue Tests"
+  private final val TestIdentifier = "FaceValue Tests"
 
   test(s"$TestIdentifier: should be ordered by ordinal number.") {
     val faceValue = "foo"

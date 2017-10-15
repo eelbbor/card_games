@@ -8,7 +8,7 @@ import org.junit.Assert.{assertEquals}
   * @author Robb Lee (robbmlee@gmail.com).
   */
 class PinochleCardTest extends BaseTest {
-  private val TestIdentifier = "PinochleCard Tests"
+  private final val TestIdentifier = "PinochleCard Tests"
 
   test(s"$TestIdentifier: should sort by card ordinal value.") {
     val suite = Suite.Clubs

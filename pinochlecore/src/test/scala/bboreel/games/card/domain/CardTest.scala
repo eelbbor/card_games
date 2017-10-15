@@ -1,6 +1,6 @@
 package bboreel.games.card.domain
 
-import bboreel.games.card.BaseTest
+import bboreel.games.card.{BaseTest, TestUtils}
 import org.junit.Assert.{assertEquals, assertNotEquals, assertTrue}
 
 import scala.util.Random
@@ -9,7 +9,7 @@ import scala.util.Random
   * @author Robb Lee (robbmlee@gmail.com).
   */
 class CardTest extends BaseTest {
-  private val TestIdentifier = "Card Tests"
+  private final val TestIdentifier = "Card Tests"
   private val defaultFaceValueString = "foo"
 
   test(s"$TestIdentifier: should not be equal for different ordinal value.") {
@@ -42,14 +42,14 @@ class CardTest extends BaseTest {
 
   test(s"$TestIdentifier: should sort by suite then by value.") {
     val numCardsPerSuite = 13
-    val cards: List[Card] =
-      Random.shuffle(Utils.createSetOfCardsForAllSuites(1 to numCardsPerSuite))
+    val cards: Vector[Card] =
+      Random.shuffle(TestUtils.createVectorOfCardsForAllSuites(1 to numCardsPerSuite))
     assertEquals(4 * numCardsPerSuite, cards.size)
 
     assertTrue(s"Should have multiple sets in the first $numCardsPerSuite cards.",
       (0 until numCardsPerSuite).map(cards(_).suite).toSet.size > 1)
 
-    val sortedCards: List[Card] = cards.sorted(Ordering[Card])
+    val sortedCards: Vector[Card] = cards.sorted(Ordering[Card])
     // Validate each of the suits is in proper numeric order.
     var offset = 0
     Suite.values.toList.foreach((suite: Suite.Value) => {
