@@ -17,7 +17,7 @@ object TestUtils {
     UUID.randomUUID().toString.replaceAll("-", "")
   }
 
-  def randomPositiveInteger(max: Int, min: Int = 0): Int = {
+  def randomPositiveInteger(max: Int = Int.MaxValue, min: Int = 0): Int = {
     var result = min - 1
     while (result < min) {
       result = random.nextInt(max)
@@ -25,13 +25,13 @@ object TestUtils {
     result
   }
 
-  def randomEnumValue(enum: Enumeration): Enumeration = {
-    val index = random.
-    enum
+  def randomSuite(): Suite.Value = {
+    val values = Suite.values.toArray
+    values(randomPositiveInteger(values.size))
   }
 
   def createVectorOfCardsForAllSuites(ordinalRange: Range): Vector[Card] = {
     Suite.values.toVector.flatMap((suite: Suite.Value) => ordinalRange.toVector.map(
-        (ordinal: Int) => Card(suite, FaceValue(ordinal, ordinal.toString))))
+      (ordinal: Int) => Card(suite, FaceValue(ordinal, ordinal.toString))))
   }
 }
