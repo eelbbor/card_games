@@ -83,7 +83,7 @@ class TypeTest {
         Type differentType = new Type(ordinal, expectedName);
         assertFalse(randomType.equals(differentType));
         assertNotEquals(0, randomType.compareTo(differentType));
-        assertEquals(expectedOrdinal - ordinal, randomType.compareTo(differentType));
+        assertEquals(expectedOrdinal > ordinal ? 1 : -1, randomType.compareTo(differentType));
     }
 
     @Test

@@ -71,7 +71,7 @@ public class Card implements Comparable<Card> {
             return delta;
         }
 
-        delta = this.ordinal - other.ordinal;
+        delta = Integer.compare(ordinal, other.ordinal);
         if (delta != 0) {
             return delta;
         }

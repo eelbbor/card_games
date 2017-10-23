@@ -102,7 +102,7 @@ class CardTest {
         Card differentCard = new Card(expectedType, ordinal, expectedFaceValue);
         assertFalse(randomCard.equals(differentCard));
         assertNotEquals(0, randomCard.compareTo(differentCard));
-        assertEquals(expectedOrdinal - ordinal, randomCard.compareTo(differentCard));
+        assertEquals(expectedOrdinal > ordinal ? 1 : -1, randomCard.compareTo(differentCard));
     }
 
     @Test

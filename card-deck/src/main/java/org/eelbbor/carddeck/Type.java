@@ -42,7 +42,7 @@ public class Type implements Comparable<Type> {
             throw new IllegalArgumentException("Cannot compare to null.");
         }
 
-        int delta = ordinal - other.ordinal;
+        int delta = Integer.compare(ordinal, other.ordinal);
         return delta == 0 ? name.compareTo(other.name) : delta;
     }
 
