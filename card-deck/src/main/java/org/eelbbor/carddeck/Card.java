@@ -1,6 +1,8 @@
 package org.eelbbor.carddeck;
 
 
+import org.eelbbor.carddeck.standard.Suite;
+
 import java.util.Objects;
 
 /**
@@ -16,32 +18,32 @@ import java.util.Objects;
  */
 public class Card implements Comparable<Card> {
     private Type type;
-    private Suite suite;
     private int ordinal;
     private String faceValue;
 
     /**
      * General constructor.
      *
-     * @param suite one of the suite definitions from the {@link Suite} enum.
+     * @param type defintion of the card {@link Type} metadata.
      * @param ordinal index value indicating relative position of the card.
      * @param faceValue string value indicating value on the card.
      */
-    public Card(Suite suite, int ordinal, String faceValue) {
-        if (suite == null) {
+    public Card(Type type, int ordinal, String faceValue) {
+        if (type == null) {
             throw new IllegalArgumentException("Suite must be defined.");
         }
 
         if (faceValue == null || faceValue.trim().isEmpty()) {
             throw new IllegalArgumentException("Face value must be defined.");
         }
-        this.suite = suite;
+
+        this.type = type;
         this.ordinal = ordinal;
         this.faceValue = faceValue;
     }
 
-    public Suite getSuite() {
-        return suite;
+    public Type getType() {
+        return type;
     }
 
     public int getOrdinal() {
@@ -64,7 +66,7 @@ public class Card implements Comparable<Card> {
             throw new IllegalArgumentException("Cannot compare to null.");
         }
 
-        int delta = this.suite.compareTo(other.suite);
+        int delta = this.type.compareTo(other.type);
         if (delta != 0) {
             return delta;
         }
@@ -86,12 +88,13 @@ public class Card implements Comparable<Card> {
             return false;
         }
         Card card = (Card) other;
-        return ordinal == card.ordinal && suite == card.suite &&
+        return ordinal == card.ordinal &&
+            Objects.equals(type, card.type) &&
             Objects.equals(faceValue, card.faceValue);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(ordinal, suite, faceValue);
+        return Objects.hash(ordinal, type, faceValue);
     }
 }

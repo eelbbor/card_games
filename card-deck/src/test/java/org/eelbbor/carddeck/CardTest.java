@@ -3,9 +3,6 @@ package org.eelbbor.carddeck;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
-
-import static org.eelbbor.carddeck.TestUtils.randomEnum;
 import static org.eelbbor.carddeck.TestUtils.randomInteger;
 import static org.eelbbor.carddeck.TestUtils.randomString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -15,21 +12,21 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class CardTest {
     private Card randomCard;
-    private Suite expectedSuite;
+    private Type expectedType;
     private int expectedOrdinal;
     private String expectedFaceValue;
 
     @BeforeEach
     void setUp() {
-        expectedSuite = randomEnum(Suite.class);
+        expectedType = new Type(randomInteger(), randomString());
         expectedOrdinal = randomInteger();
         expectedFaceValue = randomString();
-        randomCard = new Card(expectedSuite, expectedOrdinal, expectedFaceValue);
+        randomCard = new Card(expectedType, expectedOrdinal, expectedFaceValue);
     }
 
     @Test
     void shouldSetGenericValues() {
-        assertEquals(expectedSuite, randomCard.getSuite());
+        assertEquals(expectedType, randomCard.getType());
         assertEquals(expectedOrdinal, randomCard.getOrdinal());
         assertEquals(expectedFaceValue, randomCard.getFaceValue());
 
@@ -50,7 +47,7 @@ class CardTest {
     void shouldThrowExceptionForNullFaceValue() {
         assertEquals("Face value must be defined.",
             assertThrows(IllegalArgumentException.class,
-                () -> new Card(randomEnum(Suite.class), randomInteger(), null)).getMessage()
+                () -> new Card(expectedType, randomInteger(), null)).getMessage()
         );
     }
 
@@ -58,24 +55,21 @@ class CardTest {
     void shouldThrowExceptionForEmptyFaceValue() {
         assertEquals("Face value must be defined.",
             assertThrows(IllegalArgumentException.class,
-                () -> new Card(randomEnum(Suite.class), randomInteger(), "")).getMessage()
-        );
+                () -> new Card(expectedType, randomInteger(), "")).getMessage());
     }
 
     @Test
     void shouldThrowExceptionForBlankFaceValue() {
         assertEquals("Face value must be defined.",
             assertThrows(IllegalArgumentException.class,
-                () -> new Card(randomEnum(Suite.class), randomInteger(), "    ")).getMessage()
-        );
+                () -> new Card(expectedType, randomInteger(), "    ")).getMessage());
     }
 
     @Test
     void shouldThrowExceptionForNullCompareTo() {
         assertEquals("Cannot compare to null.",
             assertThrows(IllegalArgumentException.class,
-                () -> randomCard.compareTo(null)).getMessage()
-        );
+                () -> randomCard.compareTo(null)).getMessage());
     }
 
     @Test
@@ -90,12 +84,13 @@ class CardTest {
 
     @Test
     void shouldNotBeEqualForDifferentSuite() {
-        Suite otherSuite =
-            Arrays.stream(Suite.values()).filter(suite -> suite != expectedSuite).findFirst().get();
-        Card differentCard = new Card(otherSuite, expectedOrdinal, expectedFaceValue);
+        Type otherType = new Type(randomInteger(), randomString());
+        assertNotEquals(expectedType, otherType);
+
+        Card differentCard = new Card(otherType, expectedOrdinal, expectedFaceValue);
         assertFalse(randomCard.equals(differentCard));
         assertNotEquals(0, randomCard.compareTo(differentCard));
-        assertEquals(expectedSuite.compareTo(otherSuite), randomCard.compareTo(differentCard));
+        assertEquals(expectedType.compareTo(otherType), randomCard.compareTo(differentCard));
     }
 
     @Test
@@ -104,7 +99,7 @@ class CardTest {
         do {
             ordinal = randomInteger();
         } while(ordinal == expectedOrdinal);
-        Card differentCard = new Card(expectedSuite, ordinal, expectedFaceValue);
+        Card differentCard = new Card(expectedType, ordinal, expectedFaceValue);
         assertFalse(randomCard.equals(differentCard));
         assertNotEquals(0, randomCard.compareTo(differentCard));
         assertEquals(expectedOrdinal - ordinal, randomCard.compareTo(differentCard));
@@ -116,7 +111,7 @@ class CardTest {
         do {
             faceValue = randomString();
         } while(faceValue.equals(expectedFaceValue));
-        Card differentCard = new Card(expectedSuite, expectedOrdinal, faceValue);
+        Card differentCard = new Card(expectedType, expectedOrdinal, faceValue);
         assertFalse(randomCard.equals(differentCard));
         assertNotEquals(0, randomCard.compareTo(differentCard));
         assertEquals(expectedFaceValue.compareTo(faceValue), randomCard.compareTo(differentCard));

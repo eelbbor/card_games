@@ -26,6 +26,10 @@ class TypeTest {
     void shouldCreateType() {
         assertEquals(expectedOrdinal, randomType.getOrdinal());
         assertEquals(expectedName, randomType.getName());
+
+        assertEquals(randomType, randomType);
+        assertEquals(randomType.hashCode(), randomType.hashCode());
+        assertEquals(0, randomType.compareTo(randomType));
     }
 
     @Test
