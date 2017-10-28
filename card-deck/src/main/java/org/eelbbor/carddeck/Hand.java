@@ -5,8 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Generic hand structure for a card hand. Enables standard behaviors such as being dealt or
- * playing a card.
+ * Enables standard behaviors for a hand in a card game such as being dealt or playing a card.
  *
  * @author Robb Lee (robbmlee@gmail.com).
  */

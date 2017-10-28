@@ -28,7 +28,7 @@ class CardTest {
     void shouldSetGenericValues() {
         assertEquals(expectedType, randomCard.getType());
         assertEquals(expectedOrdinal, randomCard.getOrdinal());
-        assertEquals(expectedFaceValue, randomCard.getFaceValue());
+        assertEquals(expectedFaceValue, randomCard.getValue());
 
         assertEquals(0, randomCard.compareTo(randomCard));
         assertEquals(randomCard, randomCard);
@@ -36,8 +36,8 @@ class CardTest {
     }
 
     @Test
-    void shouldThrowExceptionForNullSuite() {
-        assertEquals("Suite must be defined.",
+    void shouldThrowExceptionForNullType() {
+        assertEquals("Type must be defined.",
             assertThrows(IllegalArgumentException.class,
                 () -> new Card(null, randomInteger(), randomString())).getMessage()
         );
@@ -45,7 +45,7 @@ class CardTest {
 
     @Test
     void shouldThrowExceptionForNullFaceValue() {
-        assertEquals("Face value must be defined.",
+        assertEquals("Value must be defined.",
             assertThrows(IllegalArgumentException.class,
                 () -> new Card(expectedType, randomInteger(), null)).getMessage()
         );
@@ -53,14 +53,14 @@ class CardTest {
 
     @Test
     void shouldThrowExceptionForEmptyFaceValue() {
-        assertEquals("Face value must be defined.",
+        assertEquals("Value must be defined.",
             assertThrows(IllegalArgumentException.class,
                 () -> new Card(expectedType, randomInteger(), "")).getMessage());
     }
 
     @Test
     void shouldThrowExceptionForBlankFaceValue() {
-        assertEquals("Face value must be defined.",
+        assertEquals("Value must be defined.",
             assertThrows(IllegalArgumentException.class,
                 () -> new Card(expectedType, randomInteger(), "    ")).getMessage());
     }

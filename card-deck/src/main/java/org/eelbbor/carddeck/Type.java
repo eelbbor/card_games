@@ -3,7 +3,7 @@ package org.eelbbor.carddeck;
 import java.util.Objects;
 
 /**
- * Generic definition to capture metatdata for a card type. An example would be a traditional
+ * Generic definition to capture metatdata for a card type. An traditional example would be a
  * suite such as Clubs, but enables dynamic definitions such as a color. Also tracks an ordinal
  * to allow for sorting by the type. See the {@link Type#compareTo(Type)} method for more
  * information regarding the default sorting.

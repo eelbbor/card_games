@@ -42,7 +42,7 @@ class HandTest {
         hand.dealCard(random);
         assertEquals(2, hand.numCards());
 
-        Card randomCopy = new Card(random.getType(), random.getOrdinal(), random.getFaceValue());
+        Card randomCopy = new Card(random.getType(), random.getOrdinal(), random.getValue());
         hand.dealCard(randomCopy);
         assertEquals(3, hand.numCards());
     }
@@ -70,7 +70,7 @@ class HandTest {
         hand.dealCard(random);
         hand.dealCard(random);
 
-        Card randomCopy = new Card(random.getType(), random.getOrdinal(), random.getFaceValue());
+        Card randomCopy = new Card(random.getType(), random.getOrdinal(), random.getValue());
         hand.dealCard(randomCopy);
         assertEquals(3, hand.numCards());
 
@@ -90,13 +90,17 @@ class HandTest {
 
     @Test
     void playCardFromEmptyHand() {
-        assertFalse(hand.playCard(createRandomCard()));
+        Card randomCard = createRandomCard();
+        assertFalse(hand.containsCard(randomCard));
+        assertFalse(hand.playCard(randomCard));
     }
 
     @Test
     void playCardNotInHand() {
         hand.dealCard(createRandomCard());
-        assertFalse(hand.playCard(createRandomCard()));
+        Card randomCard = createRandomCard();
+        assertFalse(hand.containsCard(randomCard));
+        assertFalse(hand.playCard(randomCard));
     }
 
     private Card createRandomCard() {

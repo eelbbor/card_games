@@ -65,6 +65,16 @@ class TypeTest {
     }
 
     @Test
+    void shouldBeEqualForSameOrdinalAndName() {
+        int ordinal = randomInteger();
+        String name = randomString();
+        Type typeOne = new Type(ordinal, name);
+        Type typeTwo = new Type(ordinal, name);
+        assertFalse(typeOne == typeTwo);
+        assertEquals(typeOne, typeTwo);
+    }
+
+    @Test
     void shouldNotBeEqualForNull() {
         assertFalse(randomType.equals(null));
     }

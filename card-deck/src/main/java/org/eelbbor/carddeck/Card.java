@@ -1,16 +1,13 @@
 package org.eelbbor.carddeck;
 
 
-import org.eelbbor.carddeck.standard.Suite;
-
 import java.util.Objects;
 
 /**
- * Generic card definition based on a traditional suite defined in {@link Suite} and corresponding
- * face value as described by an ordinal number and string value on the card. This class enables
- * ordering of cards based on the {@link Suite}, ordinal and face value in respective order.
+ * Generic card definition based on a card {@link Type}, ordinal and value. This class enables
+ * ordering of cards based on the {@link Type}, ordinal and value in respective order.
  *
- * NOTE: Ordering is focused on a behavior central to sorting a collection of cards by suite and
+ * NOTE: Ordering is focused on a behavior central to sorting a collection of cards by type and
  * then value, but not necessarily for determining if the value should defeat another card in a
  * game.
  *
@@ -19,27 +16,27 @@ import java.util.Objects;
 public class Card implements Comparable<Card> {
     private Type type;
     private int ordinal;
-    private String faceValue;
+    private String value;
 
     /**
      * General constructor.
      *
      * @param type defintion of the card {@link Type} metadata.
      * @param ordinal index value indicating relative position of the card.
-     * @param faceValue string value indicating value on the card.
+     * @param value string value indicating value on the card.
      */
-    public Card(Type type, int ordinal, String faceValue) {
+    public Card(Type type, int ordinal, String value) {
         if (type == null) {
-            throw new IllegalArgumentException("Suite must be defined.");
+            throw new IllegalArgumentException("Type must be defined.");
         }
 
-        if (faceValue == null || faceValue.trim().isEmpty()) {
-            throw new IllegalArgumentException("Face value must be defined.");
+        if (value == null || value.trim().isEmpty()) {
+            throw new IllegalArgumentException("Value must be defined.");
         }
 
         this.type = type;
         this.ordinal = ordinal;
-        this.faceValue = faceValue;
+        this.value = value;
     }
 
     public Type getType() {
@@ -50,12 +47,12 @@ public class Card implements Comparable<Card> {
         return ordinal;
     }
 
-    public String getFaceValue() {
-        return faceValue;
+    public String getValue() {
+        return value;
     }
 
     /**
-     * Enables ordering and card comparison based on {@link Type}, ordinal and lastly face value.
+     * Enables ordering and card comparison based on {@link Type}, ordinal and lastly value.
      *
      * @param other {@link Card} to compare against.
      * @return int indicating where the card belongs in a sort order.
@@ -76,7 +73,7 @@ public class Card implements Comparable<Card> {
             return delta;
         }
 
-        return this.faceValue.compareTo(other.faceValue);
+        return this.value.compareTo(other.value);
     }
 
     @Override
@@ -90,11 +87,11 @@ public class Card implements Comparable<Card> {
         Card card = (Card) other;
         return ordinal == card.ordinal &&
             Objects.equals(type, card.type) &&
-            Objects.equals(faceValue, card.faceValue);
+            Objects.equals(value, card.value);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(ordinal, type, faceValue);
+        return Objects.hash(ordinal, type, value);
     }
 }
