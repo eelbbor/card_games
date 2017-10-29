@@ -1,4 +1,4 @@
-package org.eelbbor.carddeck;
+package org.eelbbor.pinochle;
 
 import java.util.Random;
 import java.util.UUID;

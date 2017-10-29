@@ -11,9 +11,11 @@
 
     <modules>
         <module>card-deck</module>
+        <module>pinochle</module>
     </modules>
 
     <properties>
+        <maven.checkstyle.plugin.version>2.17</maven.checkstyle.plugin.version>
         <maven.compiler.plugin.version>3.7.0</maven.compiler.plugin.version>
 
         <!-- Test dependency properties -->
@@ -51,6 +53,27 @@
                         <version>${junit.version}</version>
                     </dependency>
                 </dependencies>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>${maven.checkstyle.plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>verify-style</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <logViolationsToConsole>true</logViolationsToConsole>
+                    <configLocation>checkstyle.xml</configLocation>
+                    <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                    <excludes>**/module-info.java</excludes>
+                </configuration>
             </plugin>
 
             <plugin>
