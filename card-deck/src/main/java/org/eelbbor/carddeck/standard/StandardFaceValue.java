@@ -7,7 +7,7 @@ package org.eelbbor.carddeck.standard;
  *
  * @author Robb Lee (robbmlee@gmail.com)
  */
-public enum FaceValue {
+public enum StandardFaceValue {
   Two(2),
   Three(3),
   Four(4),
@@ -24,7 +24,7 @@ public enum FaceValue {
 
   private int unicodeOffset;
 
-  FaceValue(int unicodeOffset) {
+  StandardFaceValue(int unicodeOffset) {
     this.unicodeOffset = unicodeOffset;
   }
 

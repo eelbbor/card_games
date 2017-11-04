@@ -1,33 +1,33 @@
 package org.eelbbor.pinochle;
 
-import org.eelbbor.carddeck.standard.FaceValue;
+import org.eelbbor.carddeck.standard.StandardFaceValue;
 
 /**
  * Pinochle card face values based on the traditional set of French playing cards defined by the
- * {@link FaceValue} implementation.
+ * {@link StandardFaceValue} implementation. The ordering of the values effects the sorting to
+ * reflect the values in a pinochle hand.
  *
  * @author Robb Lee (robbmlee@gmail.com).
  */
 public enum PinochleFaceValue {
-  Jack(FaceValue.Jack),
-  Queen(FaceValue.Queen),
-  King(FaceValue.King),
-  Ten(FaceValue.Ten),
-  Ace(FaceValue.Ace);
+  Jack(StandardFaceValue.Jack),
+  Queen(StandardFaceValue.Queen),
+  King(StandardFaceValue.King),
+  Ten(StandardFaceValue.Ten),
+  Ace(StandardFaceValue.Ace);
 
-  private FaceValue faceValue;
+  private StandardFaceValue standardFaceValue;
 
-  PinochleFaceValue(FaceValue faceValue) {
-    this.faceValue = faceValue;
+  PinochleFaceValue(StandardFaceValue standardFaceValue) {
+    this.standardFaceValue = standardFaceValue;
   }
 
   /**
-   * Returns the offset for the unicode character as associated with the values defined in the
-   * {@link FaceValue} definitions.
+   * Returns the {@link StandardFaceValue} this value is based on.
    *
-   * @return int value of the character codePoint offset.
+   * @return {@link StandardFaceValue} value.
    */
-  public int getUnicodeOffset() {
-    return faceValue.getUnicodeOffset();
+  public StandardFaceValue getStandardFaceValue() {
+    return standardFaceValue;
   }
 }

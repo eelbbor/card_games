@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.eelbbor.carddeck.standard.FaceValue;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -38,16 +37,6 @@ class PinochleFaceValueTest {
     assertEquals(PinochleFaceValue.Ten, sortedIterator.next());
     assertEquals(PinochleFaceValue.Ace, sortedIterator.next());
     assertFalse(sortedIterator.hasNext());
-  }
-
-  @Test
-  void shouldSetOffsetsForCodePointCorrectly() {
-    assertEquals(5, PinochleFaceValue.values().length);
-    assertEquals(FaceValue.Jack.getUnicodeOffset(), PinochleFaceValue.Jack.getUnicodeOffset());
-    assertEquals(FaceValue.Queen.getUnicodeOffset(), PinochleFaceValue.Queen.getUnicodeOffset());
-    assertEquals(FaceValue.King.getUnicodeOffset(), PinochleFaceValue.King.getUnicodeOffset());
-    assertEquals(FaceValue.Ten.getUnicodeOffset(), PinochleFaceValue.Ten.getUnicodeOffset());
-    assertEquals(FaceValue.Ace.getUnicodeOffset(), PinochleFaceValue.Ace.getUnicodeOffset());
   }
 
   @Test

@@ -39,14 +39,29 @@ public class Card implements Comparable<Card> {
     this.value = value;
   }
 
+  /**
+   * Returns the card type, which serves as a higher level classification for the card.
+   *
+   * @return {@link Type} of the card.
+   */
   public Type getType() {
     return type;
   }
 
+  /**
+   * Returns the relative power of the card within a given {@link Type}.
+   *
+   * @return int value of card rank.
+   */
   public int getOrdinal() {
     return ordinal;
   }
 
+  /**
+   * Returns a string value indication of the card value, i.e. King or One
+   *
+   * @return string representation of the card value.
+   */
   public String getValue() {
     return value;
   }
@@ -63,17 +78,17 @@ public class Card implements Comparable<Card> {
       throw new IllegalArgumentException("Cannot compare to null.");
     }
 
-    int delta = this.type.compareTo(other.type);
+    int delta = this.getType().compareTo(other.getType());
     if (delta != 0) {
       return delta;
     }
 
-    delta = Integer.compare(ordinal, other.ordinal);
+    delta = Integer.compare(getOrdinal(), other.getOrdinal());
     if (delta != 0) {
       return delta;
     }
 
-    return this.value.compareTo(other.value);
+    return this.getValue().compareTo(other.getValue());
   }
 
   @Override
@@ -85,12 +100,13 @@ public class Card implements Comparable<Card> {
       return false;
     }
     Card card = (Card) other;
-    return ordinal == card.ordinal && Objects.equals(type, card.type)
-        && Objects.equals(value, card.value);
+    return getOrdinal() == card.getOrdinal()
+        && Objects.equals(getType(), card.getType())
+        && Objects.equals(getValue(), card.getValue());
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(ordinal, type, value);
+    return Objects.hash(getOrdinal(), getType(), getValue());
   }
 }
