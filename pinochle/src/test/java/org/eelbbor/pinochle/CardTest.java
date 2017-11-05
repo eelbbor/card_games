@@ -30,6 +30,7 @@ class CardTest {
     Suite suite = TestUtils.randomEnum(Suite.class);
     for (PinochleFaceValue faceValue : PinochleFaceValue.values()) {
       Card card = new Card(suite, faceValue);
+      assertEquals(faceValue, card.getFaceValue());
       assertEquals(card.getOrdinal(), faceValue.ordinal());
       assertNotEquals(card.getOrdinal(), faceValue.getStandardFaceValue().ordinal());
     }

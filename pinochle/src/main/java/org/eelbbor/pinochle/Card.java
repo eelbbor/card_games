@@ -36,4 +36,13 @@ public class Card extends StandardCard {
   public int getOrdinal() {
     return faceValue.ordinal();
   }
+
+  /**
+   * Returns the {@link PinochleFaceValue} defining the card.
+   *
+   * @return {@link PinochleFaceValue} card is defined by.
+   */
+  public PinochleFaceValue getFaceValue() {
+    return faceValue;
+  }
 }

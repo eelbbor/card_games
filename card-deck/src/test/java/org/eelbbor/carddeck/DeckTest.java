@@ -18,7 +18,7 @@ class DeckTest {
   void shouldNotBeAbleToMutateDeckFromOriginalList() {
     int numberOfCards = 100;
     List<Card> cardsArg = createRandomCards(numberOfCards);
-    Deck deck = new Deck(cardsArg);
+    Deck<Card> deck = new Deck<>(cardsArg);
     assertEquals(numberOfCards, deck.size());
 
     while (cardsArg.size() > 0) {
@@ -32,7 +32,7 @@ class DeckTest {
   void shouldDealCardsInTheSameIterableOrderAsTheProvidedList() {
     int numberOfCards = 100;
     List<Card> cardsArg = createRandomCards(numberOfCards);
-    Deck deck = new Deck(cardsArg);
+    Deck<Card> deck = new Deck<>(cardsArg);
 
     while (cardsArg.size() > 0) {
       assertEquals(cardsArg.remove(0), deck.deal().get());
@@ -42,7 +42,7 @@ class DeckTest {
   @Test
   void shouldThrowExceptionForNullListOfCardsToConstructor() {
     try {
-      new Deck(null);
+      new Deck<>(null);
       fail("Should have thrown exception trying to create deck with null cards list.");
     } catch (IllegalArgumentException ex) {
       assertEquals("The card list cannot be null nor empty.", ex.getMessage());
@@ -52,7 +52,7 @@ class DeckTest {
   @Test
   void shouldThrowExceptionForEmptyListOfCardsToConstructor() {
     try {
-      new Deck(new ArrayList<>());
+      new Deck<>(new ArrayList<>());
       fail("Should have thrown exception trying to create deck with empty cards list.");
     } catch (IllegalArgumentException ex) {
       assertEquals("The card list cannot be null nor empty.", ex.getMessage());
@@ -62,7 +62,7 @@ class DeckTest {
   @Test
   void shouldRemoveDealtCardFromRemainingCardsAndAddToDealtCards() {
     int numberOfCards = 100;
-    Deck deck = new Deck(createRandomCards(numberOfCards));
+    Deck<Card> deck = new Deck<>(createRandomCards(numberOfCards));
     validateDealingAllCards(numberOfCards, deck);
   }
 
@@ -74,7 +74,7 @@ class DeckTest {
     while (cardsArg.size() < repeatedCardCount) {
       cardsArg.add(card);
     }
-    Deck deck = new Deck(cardsArg);
+    Deck<Card> deck = new Deck<>(cardsArg);
     assertEquals(repeatedCardCount, deck.size());
     assertEquals(repeatedCardCount, deck.remainingCount());
     validateDealingAllCards(repeatedCardCount, deck);
@@ -84,7 +84,7 @@ class DeckTest {
   void shouldReturnEmptyOptionalIfNoRemainingCardsToBeDealt() {
     List<Card> randomCards = createRandomCards(1);
     Card card = randomCards.get(0);
-    Deck deck = new Deck(randomCards);
+    Deck<Card> deck = new Deck<>(randomCards);
     assertEquals(card, deck.deal().get());
     assertEquals(0, deck.remainingCount());
     assertEquals(1, deck.dealtCount());
@@ -95,7 +95,7 @@ class DeckTest {
   @Test
   void shouldThrowExceptionTryingToDiscardWithANullArgument() {
     try {
-      new Deck(createRandomCards(52)).discard(null);
+      new Deck<>(createRandomCards(52)).discard(null);
       fail("Should have thrown exception trying to discard null card.");
     } catch (IllegalArgumentException ex) {
       assertEquals("Cannot discard a card not present in the dealt cards", ex.getMessage());
@@ -105,7 +105,7 @@ class DeckTest {
   @Test
   void shouldThrowExceptionTryingToDiscardACardNotInTheDealtCards() {
     int numberOfCards = 52;
-    Deck deck = new Deck(createRandomCards(numberOfCards));
+    Deck<Card> deck = new Deck<>(createRandomCards(numberOfCards));
     List<Card> dealtCards = new ArrayList<>();
     for (int i = 0; i < numberOfCards / 2; i++) {
       dealtCards.add(deck.deal().get());
@@ -127,7 +127,7 @@ class DeckTest {
   @Test
   void shouldPlaceCardOnDiscardPileAndRemoveFromDealtCards() {
     int numberOfCards = 100;
-    Deck deck = new Deck(createRandomCards(numberOfCards));
+    Deck<Card> deck = new Deck<>(createRandomCards(numberOfCards));
     validateDealtCardsAreDiscarded(numberOfCards, deck);
   }
 
@@ -139,14 +139,14 @@ class DeckTest {
     while (randomCards.size() < numberOfCards) {
       randomCards.add(card);
     }
-    Deck deck = new Deck(randomCards);
+    Deck<Card> deck = new Deck<>(randomCards);
     validateDealtCardsAreDiscarded(numberOfCards, deck);
   }
 
   @Test
   void shouldRemoveCardFromDiscardPileAndMoveItBackToTheDealtCards() {
     int numberOfCards = 100;
-    Deck deck = new Deck(createRandomCards(numberOfCards));
+    Deck<Card> deck = new Deck<>(createRandomCards(numberOfCards));
     assertFalse(deck.drawDiscard().isPresent());
 
     // Deal and discard some of the cards.
@@ -174,7 +174,7 @@ class DeckTest {
   void shouldShuffleDeckWithAllCardsRemaining() {
     int numberOfCards = 100;
     List<Card> originalList = createRandomCards(numberOfCards);
-    Deck deck = new Deck(originalList);
+    Deck<Card> deck = new Deck<>(originalList);
     assertEquals(numberOfCards, deck.remainingCount());
     deck.shuffle();
     int delta = 0;
@@ -188,7 +188,7 @@ class DeckTest {
   void shouldShuffleDeckWithAllCardsDealt() {
     int numberOfCards = 100;
     List<Card> originalList = createRandomCards(numberOfCards);
-    Deck deck = new Deck(originalList);
+    Deck<Card> deck = new Deck<>(originalList);
 
     // Deal all the cards.
     IntStream.range(0, numberOfCards).forEach(i -> deck.deal());
@@ -211,7 +211,7 @@ class DeckTest {
   void shouldShuffleDeckWithAllCardsDiscarded() {
     int numberOfCards = 100;
     List<Card> originalList = createRandomCards(numberOfCards);
-    Deck deck = new Deck(originalList);
+    Deck<Card> deck = new Deck<>(originalList);
 
     // Deal and discard all the cards.
     IntStream.range(0, numberOfCards).forEach(i -> deck.discard(deck.deal().get()));
@@ -234,7 +234,7 @@ class DeckTest {
   void shouldCombineAllCardsBackToRemainingAndReshuffle() {
     int numberOfCards = 99;
     List<Card> originalList = createRandomCards(numberOfCards);
-    Deck deck = new Deck(originalList);
+    Deck<Card> deck = new Deck<>(originalList);
 
     // Deal and discard some of the cards.
     IntStream.range(0, 2 * numberOfCards / 3).forEach(i -> {
@@ -258,7 +258,7 @@ class DeckTest {
     assertTrue(delta > 0, "Shuffling the deck should have yielded a different order.");
   }
 
-  private void validateDealingAllCards(int repeatedCardCount, Deck deck) {
+  private void validateDealingAllCards(int repeatedCardCount, Deck<Card> deck) {
     for (int dealtCards = 1; dealtCards <= repeatedCardCount; dealtCards++) {
       assertTrue(deck.deal().isPresent());
       assertEquals(repeatedCardCount, deck.size());
@@ -268,7 +268,7 @@ class DeckTest {
     }
   }
 
-  private void validateDealtCardsAreDiscarded(int numberOfCards, Deck deck) {
+  private void validateDealtCardsAreDiscarded(int numberOfCards, Deck<Card> deck) {
     assertTrue(numberOfCards >= 10);
     List<Card> dealtCards = new ArrayList<>();
     for (int i = 0; i < numberOfCards / 2; i++) {

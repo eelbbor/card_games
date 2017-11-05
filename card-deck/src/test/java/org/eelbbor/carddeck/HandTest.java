@@ -14,11 +14,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 class HandTest {
-  private Hand hand;
+  private Hand<Card> hand;
 
   @BeforeEach
   void setUp() {
-    hand = new Hand();
+    hand = new Hand<>();
   }
 
   @Test

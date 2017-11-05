@@ -14,11 +14,11 @@ import java.util.Stack;
  *
  * @author Robb Lee (robbmlee@gmail.com).
  */
-public class Deck {
+public class Deck<T extends Card> {
   private int size;
-  private List<Card> remainingCards;
-  private List<Card> dealtCards;
-  private Stack<Card> discardStack;
+  private List<T> remainingCards;
+  private List<T> dealtCards;
+  private Stack<T> discardStack;
 
   /**
    * Creates a deck of cards based on the provided {@link List} of cards. The list must be greater
@@ -26,7 +26,7 @@ public class Deck {
    *
    * @param cardList {@link List} of cards present in the deck.
    */
-  public Deck(List<Card> cardList) {
+  public Deck(List<T> cardList) {
     if (cardList == null || cardList.size() < 1) {
       throw new IllegalArgumentException("The card list cannot be null nor empty.");
     }
@@ -73,8 +73,8 @@ public class Deck {
    *
    * @return {@link Optional} with next {@link Card} in the remaining cards, no value if empty.
    */
-  public Optional<Card> deal() {
-    Optional<Card> card =
+  public Optional<T> deal() {
+    Optional<T> card =
         Optional.ofNullable(remainingCards.isEmpty() ? null : remainingCards.remove(0));
     card.ifPresent(card1 -> dealtCards.add(card1));
     return card;
@@ -95,7 +95,7 @@ public class Deck {
    *
    * @param card {@link Card} to be discarded.
    */
-  public void discard(Card card) {
+  public void discard(T card) {
     if (card == null || !dealtCards.remove(card)) {
       throw new IllegalArgumentException("Cannot discard a card not present in the dealt cards");
     }
@@ -107,7 +107,7 @@ public class Deck {
    *
    * @return {@link Optional} with {@link Card} on the top of the discard stack unless empty.
    */
-  public Optional<Card> lastDiscard() {
+  public Optional<T> lastDiscard() {
     return discardStack.isEmpty() ? Optional.empty() : Optional.of(discardStack.peek());
   }
 
@@ -116,11 +116,11 @@ public class Deck {
    *
    * @return {@link Optional} with {@link Card} from the top of the discard stack unless empty.
    */
-  public Optional<Card> drawDiscard() {
+  public Optional<T> drawDiscard() {
     if (discardStack.isEmpty()) {
       return Optional.empty();
     }
-    Card card = discardStack.pop();
+    T card = discardStack.pop();
     dealtCards.add(card);
     return Optional.of(card);
   }

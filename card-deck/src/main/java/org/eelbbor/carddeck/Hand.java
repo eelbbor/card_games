@@ -9,8 +9,8 @@ import java.util.List;
  *
  * @author Robb Lee (robbmlee@gmail.com).
  */
-public class Hand {
-  private List<Card> cards;
+public class Hand<T extends Card> {
+  private List<T> cards;
 
   public Hand() {
     this.cards = new ArrayList<>();
@@ -31,7 +31,7 @@ public class Hand {
    * @param card {#link Card} to check the hand for.
    * @return true if the card is in the hand, else false.
    */
-  public boolean containsCard(Card card) {
+  public boolean containsCard(T card) {
     return cards.isEmpty() ? false : cards.contains(card);
   }
 
@@ -40,7 +40,7 @@ public class Hand {
    *
    * @param card variable length number of cards to add to the hand.
    */
-  public void dealCard(Card... card) {
+  public void dealCard(T... card) {
     cards.addAll(Arrays.asList(card));
   }
 
@@ -52,7 +52,7 @@ public class Hand {
    * @param card {@link Card} object to play.
    * @return true if the card was in the hand, else false
    */
-  public boolean playCard(Card card) {
+  public boolean playCard(T card) {
     return cards.remove(card);
   }
 }
