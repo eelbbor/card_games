@@ -49,21 +49,41 @@ class HandTest {
   }
 
   @Test
+  void shouldOnlyAllowTwentyCardsInAHand() {
+    Arrays.stream(Suite.values()).forEach(suite -> {
+      Arrays.stream(PinochleFaceValue.values()).forEach(faceValue -> {
+        if (hand.numCards() < 18) {
+          hand.dealCard(new Card(suite, faceValue));
+        }
+      });
+    });
+    assertEquals(18, hand.numCards());
+    Card[] extraCards = new Card[3];
+    IntStream.range(0, 3).forEach(i ->
+        extraCards[i] = new Card(Suite.values()[i], PinochleFaceValue.values()[i]));
+    try {
+      hand.dealCard(extraCards);
+      fail("Should have throw exception for trying to deal more than 20 total cards.");
+    } catch (IllegalArgumentException ex) {
+      assertEquals("Tried to add more than 20 cards to a hand.", ex.getMessage());
+    }
+  }
+
+  @Test
   void shouldIncreaseAndReduceCardCountMapForDealtAndPlayedCard() {
     Set<Card> cardTypes = new HashSet<>();
-    for (Suite suite : Suite.values()) {
-      for (PinochleFaceValue faceValue : PinochleFaceValue.values()) {
-        Card card = new Card(suite, faceValue);
-        cardTypes.add(card);
-        IntStream.rangeClosed(1, 4).forEach(i -> {
-          hand.dealCard(card);
-          assertTrue(hand.containsCard(card));
-          assertEquals(i, hand.getCardCount(card));
-        });
-      }
+    while (cardTypes.size() < 5) {
+      cardTypes.add(new Card(randomEnum(Suite.class), randomEnum(PinochleFaceValue.class)));
     }
-    assertEquals(20, cardTypes.size());
-    assertEquals(80, hand.numCards());
+
+    // Deal each card 4 times to the hand.
+    IntStream.rangeClosed(1, 4).forEach(i -> cardTypes.stream().forEach(card -> {
+      // Add new object references for a couple of each card.
+      hand.dealCard(i % 2 == 0 ? card : new Card(card.getSuite(), card.getFaceValue()));
+      assertTrue(hand.containsCard(card));
+      assertEquals(i, hand.getCardCount(card));
+    }));
+    assertEquals(20, hand.numCards());
 
     for (Card card : cardTypes) {
       assertEquals(4, hand.getCardCount(card));
@@ -172,33 +192,23 @@ class HandTest {
 
   @Test
   void shouldReturnMeldForMarriageInTrumpAndNonTrump() {
-    // Must account for Kings and Queens around additional meld.
-    int[] expectedMelds = {24, 160, 240, 320};
-
     Suite trump = randomEnum(Suite.class);
     Card queenTrump = new Card(trump, Queen);
     Card kingTrump = new Card(trump, King);
 
-    Set<Card[]> otherMarriages = new HashSet<>();
-    Arrays.stream(Suite.values()).filter(suite1 -> suite1 != trump).forEach(
-        suite -> otherMarriages.add(new Card[] {new Card(suite, Queen), new Card(suite, King)}));
-    assertEquals(3, otherMarriages.size());
+    Suite otherSuite =
+        Arrays.stream(Suite.values()).filter(suite1 -> suite1 != trump).findAny().get();
+    Card[] otherMarriages = {new Card(otherSuite, Queen), new Card(otherSuite, King)};
 
     for (int i = 0; i < 4; i++) {
-      int expectedBase = i == 0 ? 0 : expectedMelds[i - 1];
+      int expectedBase = i * 6;
       assertEquals(expectedBase, hand.countMeld(trump));
 
       hand.dealCard(queenTrump, kingTrump);
-      assertEquals(expectedBase += 4, hand.countMeld(trump));
+      assertEquals(expectedBase + 4, hand.countMeld(trump));
 
-      int addedMarriageCount = 0;
-      for (Card[] marriage : otherMarriages) {
-        assertEquals(expectedBase + 2 * addedMarriageCount, hand.countMeld(trump));
-        hand.dealCard(marriage);
-        addedMarriageCount++;
-      }
-
-      assertEquals(expectedMelds[i], hand.countMeld(trump));
+      hand.dealCard(otherMarriages);
+      assertEquals((i + 1) * 6, hand.countMeld(trump));
     }
   }
 

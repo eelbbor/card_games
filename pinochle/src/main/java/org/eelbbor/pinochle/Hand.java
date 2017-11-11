@@ -55,6 +55,10 @@ public class Hand extends org.eelbbor.carddeck.Hand<Card> {
             + c.getFaceValue().name() + "s' of '" + c.getSuite().name() + "s'.");
       }
     });
+
+    if (numCards() > 20) {
+      throw new IllegalArgumentException("Tried to add more than 20 cards to a hand.");
+    }
   }
 
   /**
@@ -70,7 +74,7 @@ public class Hand extends org.eelbbor.carddeck.Hand<Card> {
    * <p/>
    * Pinochles
    * Pinochle(Jack of diamonds & Queen of spades):    4    30    60    90
-   *<p/>
+   * <p/>
    * Marriages and Run
    * Marriage (Kings and Queen of the same suit, not trump):   2     4      6      8
    * Royal Marriage (King and Queen of trump):                 4     8      12     16
