@@ -55,4 +55,14 @@ public class Hand<T extends Card> {
   public boolean playCard(T card) {
     return cards.remove(card);
   }
+
+  /**
+   * Returns a list of the cards remaining in the hand. Note: The return value is not tied to the
+   * cards in the hands so will mutating it will have no side effect.
+   *
+   * @return list containing the remaining cards.
+   */
+  public List<T> remainingCards() {
+    return new ArrayList<>(cards);
+  }
 }

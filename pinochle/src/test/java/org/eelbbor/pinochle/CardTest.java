@@ -7,6 +7,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.eelbbor.carddeck.standard.Suite;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+
 class CardTest {
   @Test
   void shouldShortTenToCorrectLocation() {
@@ -28,11 +30,18 @@ class CardTest {
   @Test
   void shouldOverrideOrdinalWithPinochleFaceValue() {
     Suite suite = TestUtils.randomEnum(Suite.class);
-    for (PinochleFaceValue faceValue : PinochleFaceValue.values()) {
+    Arrays.stream(PinochleFaceValue.values()).forEach(faceValue -> {
       Card card = new Card(suite, faceValue);
       assertEquals(faceValue, card.getFaceValue());
       assertEquals(card.getOrdinal(), faceValue.ordinal());
       assertNotEquals(card.getOrdinal(), faceValue.getStandardFaceValue().ordinal());
-    }
+    });
+  }
+
+  @Test
+  void shouldOverrideToStringBehavior() {
+    Arrays.stream(Suite.values()).forEach(suite ->
+        Arrays.stream(PinochleFaceValue.values()).forEach(value ->
+            assertEquals(value.name() + " of " + suite.name(), new Card(suite, value).toString())));
   }
 }

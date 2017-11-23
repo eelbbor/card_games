@@ -45,4 +45,9 @@ public class Card extends StandardCard {
   public PinochleFaceValue getFaceValue() {
     return faceValue;
   }
+
+  @Override
+  public String toString() {
+    return getFaceValue().name() + " of " + getSuite().name();
+  }
 }

@@ -1,3 +1,3 @@
 module org.eelbbor.pinochle {
-    requires org.eelbbor.carddeck;
+  requires org.eelbbor.carddeck;
 }

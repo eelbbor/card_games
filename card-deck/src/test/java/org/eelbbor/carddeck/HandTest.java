@@ -9,9 +9,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.IntStream;
 
 class HandTest {
   private Hand<Card> hand;
@@ -89,18 +93,62 @@ class HandTest {
   }
 
   @Test
-  void playCardFromEmptyHand() {
+  void shouldPlayCardFromEmptyHandWithoutException() {
     Card randomCard = createRandomCard();
     assertFalse(hand.containsCard(randomCard));
     assertFalse(hand.playCard(randomCard));
   }
 
   @Test
-  void playCardNotInHand() {
+  void shouldPlayCardNotInHandWithoutException() {
     hand.dealCard(createRandomCard());
     Card randomCard = createRandomCard();
     assertFalse(hand.containsCard(randomCard));
     assertFalse(hand.playCard(randomCard));
+  }
+
+  @Test
+  void shouldReturnRemainingCardsList() {
+    List<Card> dealtCards = new ArrayList<>();
+    int expectedLength = 100;
+    IntStream.range(0, expectedLength).forEach(i -> {
+      Card randomCard = createRandomCard();
+      dealtCards.add(randomCard);
+      hand.dealCard(randomCard);
+    });
+    assertEquals(expectedLength, hand.numCards());
+
+    Collections.sort(dealtCards);
+    List<Card> remainingCards = hand.remainingCards();
+    Collections.sort(remainingCards);
+    assertEquals(expectedLength, remainingCards.size());
+    assertEquals(dealtCards.size(), remainingCards.size());
+    IntStream.range(0, dealtCards.size())
+        .forEach(i -> assertEquals(dealtCards.get(i), remainingCards.get(i)));
+  }
+
+  @Test
+  void shouldNotMutateCardsWithResultOfRemainingCards() {
+    int expectedLength = 100;
+    IntStream.range(0, expectedLength).forEach(i -> hand.dealCard(createRandomCard()));
+    assertEquals(expectedLength, hand.numCards());
+
+    List<Card> remainingCards = hand.remainingCards();
+    assertEquals(expectedLength, remainingCards.size());
+
+    // Verify adding cards has no effect.
+    remainingCards.add(createRandomCard());
+    assertEquals(remainingCards.size() - 1, hand.numCards());
+
+    // Verify removing cards has no effect.
+    while (remainingCards.size() > 0) {
+      remainingCards.remove(0);
+      assertEquals(expectedLength, hand.numCards());
+    }
+
+    assertTrue(remainingCards.isEmpty());
+    assertEquals(expectedLength, hand.numCards());
+    assertEquals(expectedLength, hand.remainingCards().size());
   }
 
   private Card createRandomCard() {

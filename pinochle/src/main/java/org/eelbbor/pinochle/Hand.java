@@ -9,6 +9,7 @@ import org.eelbbor.carddeck.standard.Suite;
 
 import java.util.Arrays;
 import java.util.Map;
+import java.util.stream.IntStream;
 
 /**
  * Pinochle hand track cards in the hand and adds logic for calculating meld for a hand.
@@ -25,7 +26,7 @@ public class Hand extends org.eelbbor.carddeck.Hand<Card> {
 
   public static final int MARRIAGE_MULTIPLIER = 2;
 
-  private int[][] cardArray = new int[Suite.values().length][PinochleFaceValue.values().length];
+  private int[][] cardArray;
 
   public Hand() {
     this.cardArray = new int[Suite.values().length][PinochleFaceValue.values().length];
@@ -123,6 +124,16 @@ public class Hand extends org.eelbbor.carddeck.Hand<Card> {
     total -= runCount * MARRIAGE_MULTIPLIER * MARRIAGE_MULTIPLIER;
 
     return total;
+  }
+
+  /**
+   * Returns the number {@link Card} objects in the hand with the provided {@link Suite}.
+   *
+   * @param suite card suite to be matched against.
+   * @return number of cards of the given suite type.
+   */
+  int getCardCountBySuite(Suite suite) {
+    return IntStream.range(0, cardArray[0].length).map(i -> cardArray[suite.ordinal()][i]).sum();
   }
 
   /**

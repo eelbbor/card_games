@@ -16,7 +16,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.IntStream;
 
@@ -36,6 +38,7 @@ class HandTest {
     IntStream.rangeClosed(1, 4).forEach(i -> {
       hand.dealCard(card);
       assertEquals(i, hand.getCardCount(card));
+      assertEquals(i, hand.getCardCountBySuite(suite));
     });
     assertEquals(4, hand.getCardCount(card));
 
@@ -75,31 +78,45 @@ class HandTest {
     while (cardTypes.size() < 5) {
       cardTypes.add(new Card(randomEnum(Suite.class), randomEnum(PinochleFaceValue.class)));
     }
+    Map<Suite, Integer> suiteCounts = new HashMap<>();
+    cardTypes.forEach(card -> suiteCounts.put(card.getSuite(), 0));
 
     // Deal each card 4 times to the hand.
     IntStream.rangeClosed(1, 4).forEach(i -> cardTypes.stream().forEach(card -> {
       // Add new object references for a couple of each card.
       hand.dealCard(i % 2 == 0 ? card : new Card(card.getSuite(), card.getFaceValue()));
+      suiteCounts.put(card.getSuite(), suiteCounts.get(card.getSuite()) + 1);
       assertTrue(hand.containsCard(card));
       assertEquals(i, hand.getCardCount(card));
+      assertEquals(suiteCounts.get(card.getSuite()).intValue(),
+          hand.getCardCountBySuite(card.getSuite()));
     }));
     assertEquals(20, hand.numCards());
 
     for (Card card : cardTypes) {
       assertEquals(4, hand.getCardCount(card));
+      assertEquals(suiteCounts.get(card.getSuite()).intValue(),
+          hand.getCardCountBySuite(card.getSuite()));
       IntStream.rangeClosed(1, 4).forEach(i -> {
         assertTrue(hand.playCard(card));
         assertEquals(4 - i, hand.getCardCount(card));
+        suiteCounts.put(card.getSuite(), suiteCounts.get(card.getSuite()) - 1);
+        assertEquals(suiteCounts.get(card.getSuite()).intValue(),
+            hand.getCardCountBySuite(card.getSuite()));
       });
       assertEquals(0, hand.getCardCount(card));
+      assertEquals(suiteCounts.get(card.getSuite()).intValue(),
+          hand.getCardCountBySuite(card.getSuite()));
       assertFalse(hand.containsCard(card));
     }
     assertEquals(0, hand.numCards());
 
     for (Card card : cardTypes) {
       assertEquals(0, hand.getCardCount(card));
+      assertEquals(0, hand.getCardCountBySuite(card.getSuite()));
       assertFalse(hand.playCard(card));
       assertEquals(0, hand.getCardCount(card));
+      assertEquals(0, hand.getCardCountBySuite(card.getSuite()));
     }
   }
 
