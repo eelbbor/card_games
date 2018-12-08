@@ -6,7 +6,7 @@ package org.eelbbor.pinochle.exceptions;
  *
  * @author Robb Lee (robbmlee@gmail.com).
  */
-public class InvalidCardException extends Exception {
+public class InvalidCardException extends RuntimeException {
   private CardPlayingErrorCode errorCode;
 
   InvalidCardException(CardPlayingErrorCode code, String message) {

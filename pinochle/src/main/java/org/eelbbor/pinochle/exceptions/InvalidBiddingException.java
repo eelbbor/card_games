@@ -8,7 +8,7 @@ import org.eelbbor.pinochle.BidManager;
  *
  * @author Robb Lee (robbmlee@gmail.com).
  */
-public class InvalidBiddingException extends Exception {
+public class InvalidBiddingException extends RuntimeException {
   private InvalidBiddingException(String message) {
     super(message);
   }

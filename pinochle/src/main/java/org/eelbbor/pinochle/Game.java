@@ -8,7 +8,6 @@ import org.eelbbor.pinochle.exceptions.InvalidCardException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.Queue;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -53,7 +52,6 @@ public class Game {
   }
 
   public int getDealer() {
-    // TODO (robb): return currentState.dealerIndex;
     return currentState.bidManager.getDealerIndex();
   }
 
@@ -78,12 +76,10 @@ public class Game {
   }
 
   public boolean isBidding() {
-    // TODO (robb): return currentState.winningPlayerIndex < 0;
     return currentState.bidManager.isBidding();
   }
 
   public boolean isDeclaringTrump() {
-    // TODO (robb): return !isBidding() && !getTrumpSuite().isPresent();
     return currentState.bidManager.isDeclaringTrump();
   }
 
@@ -118,7 +114,7 @@ public class Game {
     } else {
       // Advance to next player for bid.
       while (bidManager.playerPassed(getCurrentPlayer())) {
-        currentPlayer = rotate(getCurrentPlayer());
+        currentPlayer = advancePlayer(getCurrentPlayer());
       }
     }
 
@@ -130,7 +126,7 @@ public class Game {
 
     // Advance to next player for bid.
     while (currentState.passed[getCurrentPlayer()]) {
-      currentPlayer = rotate(getCurrentPlayer());
+      currentPlayer = advancePlayer(getCurrentPlayer());
     }
 
     // If last player to pass, then advance the bidding to accept declaring trump.
@@ -158,7 +154,7 @@ public class Game {
     bidManager.bid(getCurrentPlayer(), bidValue);
     // Advance to next player for bid.
     do {
-      currentPlayer = rotate(getCurrentPlayer());
+      currentPlayer = advancePlayer(getCurrentPlayer());
     } while (bidManager.playerPassed(getCurrentPlayer()));
     /* if (!isBidding()) {
       throw InvalidBiddingException.biddingCompleted();
@@ -182,7 +178,7 @@ public class Game {
 
     // Advance to next player for bid.
     do {
-      currentPlayer = rotate(getCurrentPlayer());
+      currentPlayer = advancePlayer(getCurrentPlayer());
     } while (currentState.passed[getCurrentPlayer()]);*/
     return getCurrentPlayer();
   }
@@ -246,9 +242,9 @@ public class Game {
 
     // Play the card on the current trick.
     Hand currentPlayersHand = hands[getCurrentPlayer()];
-    currentTrick.playCard(card, currentPlayersHand.remainingCards());
+    currentTrick.playCard(getCurrentPlayer(), card, currentPlayersHand.remainingCards());
     currentPlayersHand.playCard(card);
-    currentPlayer = rotate(getCurrentPlayer());
+    currentPlayer = advancePlayer(getCurrentPlayer());
 
     // Check for last card of the trick.
     if (getCurrentPlayer() == getCurrentLead()) {
@@ -267,12 +263,12 @@ public class Game {
   }
 
   /**
-   * Returns a {@link Queue} of the cards played. The first card played corresponds to the
-   * current lead, see {@link Game#getCurrentLead()} for getting the first player index.
+   * Returns a {@link List} of the cards played on the trick indexed by the player as
+   * {@link Optional} in order to account for players yet to play.
    *
-   * @return queue of cards played on the current trick.
+   * @return list of the cards played.
    */
-  public List<Card> currentTrick() {
+  public List<Optional<Card>> currentTrick() {
     return currentTrick.getCardsPlayed();
   }
 
@@ -281,15 +277,15 @@ public class Game {
     deck.shuffle();
 
     // Deal to each player.
-    int dealer = currentState == null ? 0 : rotate(getDealer());
+    int dealer = currentState == null ? 0 : advancePlayer(getDealer());
     currentState = new HandState(dealer);
-    currentPlayer = rotate(dealer);
+    currentPlayer = advancePlayer(dealer);
     currentLead = dealer;
     currentTrick = null;
 
     while (deck.remainingCount() > 0) {
       IntStream.range(0, 4).forEach(i -> hands[getCurrentPlayer()].dealCard(deck.deal().get()));
-      currentPlayer = rotate(getCurrentPlayer());
+      currentPlayer = advancePlayer(getCurrentPlayer());
     }
   }
 
@@ -313,7 +309,7 @@ public class Game {
     return biddingTeam && total < bid ? -bid : total;
   }
 
-  private int rotate(int currentIndex) {
+  private int advancePlayer(int currentIndex) {
     return currentIndex == 3 ? 0 : currentIndex + 1;
   }
 
