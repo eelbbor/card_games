@@ -46,7 +46,7 @@ class TrickTest {
   }
 
   @Test
-  void shouldNotMutateCardsPlayed() throws Exception {
+  void shouldNotMutateCardsPlayed() {
     final List<Card> expectedCards = new ArrayList<>();
     while (expectedCards.size() < 4) {
       Card card = createRandomCard();
@@ -77,7 +77,7 @@ class TrickTest {
   }
 
   @Test
-  void shouldReturnCardsInProperOrder() throws Exception {
+  void shouldReturnCardsInProperOrder() {
     Card[] playedCards = new Card[4];
     int playerIndex = TestUtils.randomInteger(3);
     for (int index = 0; index < 4; index++) {
@@ -93,7 +93,7 @@ class TrickTest {
   }
 
   @Test
-  void shouldPlayLargerCardFollowingSuiteThanPreviousCard() throws Exception {
+  void shouldPlayLargerCardFollowingSuiteThanPreviousCard() {
     Suite suite = randomEnum(Suite.class);
     List<Card> cardsInHand = Arrays.stream(PinochleFaceValue.values())
         .map(faceValue -> new Card(suite, faceValue)).collect(Collectors.toList());
@@ -124,7 +124,7 @@ class TrickTest {
   }
 
   @Test
-  void shouldPlayIdenticalSizeCardFollowingSuiteWithoutLargerCard() throws Exception {
+  void shouldPlayIdenticalSizeCardFollowingSuiteWithoutLargerCard() {
     Suite suite = randomEnum(Suite.class);
     PinochleFaceValue faceValue = randomEnum(PinochleFaceValue.class);
     List<Card> cardsInHand = Arrays.stream(PinochleFaceValue.values())
@@ -150,7 +150,7 @@ class TrickTest {
   }
 
   @Test
-  void shouldPlaySmallerCardFollowingSuiteWithoutLargerCard() throws Exception {
+  void shouldPlaySmallerCardFollowingSuiteWithoutLargerCard() {
     Suite suite = randomEnum(Suite.class);
     final List<Card> cardsInHand = Arrays.stream(PinochleFaceValue.values())
         .map(value -> new Card(suite, value)).collect(Collectors.toList());
@@ -186,7 +186,7 @@ class TrickTest {
   }
 
   @Test
-  void shouldPlayLowerCardFollowingSuiteAfterTrumpPlayed() throws Exception {
+  void shouldPlayLowerCardFollowingSuiteAfterTrumpPlayed() {
     Suite suite = getNonTrumpSuite();
     List<Card> cardsInHand = Arrays.stream(PinochleFaceValue.values())
         .map(value -> new Card(suite, value)).collect(Collectors.toList());
@@ -231,7 +231,7 @@ class TrickTest {
   }
 
   @Test
-  void shouldPlayLargerTrumpThanPreviousTrump() throws Exception {
+  void shouldPlayLargerTrumpThanPreviousTrump() {
     Suite suite = getNonTrumpSuite();
     Card lead = new Card(suite, randomEnum(PinochleFaceValue.class));
     trick.playCard(0, lead, Collections.singletonList(lead));
@@ -275,7 +275,7 @@ class TrickTest {
   }
 
   @Test
-  void shouldPlayTrumpWithEqualCardWithoutLargerTrump() throws Exception {
+  void shouldPlayTrumpWithEqualCardWithoutLargerTrump() {
     Suite suite = getNonTrumpSuite();
     Card lead = new Card(suite, randomEnum(PinochleFaceValue.class));
 
@@ -313,7 +313,7 @@ class TrickTest {
   }
 
   @Test
-  void shouldPlaySmallerTrumpWithoutLargerTrump() throws Exception {
+  void shouldPlaySmallerTrumpWithoutLargerTrump() {
     Suite suite = getNonTrumpSuite();
     Card lead = new Card(suite, randomEnum(PinochleFaceValue.class));
     trick.playCard(1, lead, Collections.singletonList(lead));
@@ -354,7 +354,7 @@ class TrickTest {
   }
 
   @Test
-  void shouldAllowPlayingOffSuiteIfOutOfLedSuiteAndTrump() throws Exception {
+  void shouldAllowPlayingOffSuiteIfOutOfLedSuiteAndTrump() {
     Suite suite = getNonTrumpSuite();
     Card lead = new Card(suite, randomEnum(PinochleFaceValue.class));
 
@@ -400,7 +400,7 @@ class TrickTest {
   }
 
   @Test
-  void shouldThrowExceptionForTryingToPlayMoreThanFourCards() throws Exception {
+  void shouldThrowExceptionForTryingToPlayMoreThanFourCards() {
     int playerIndex = TestUtils.randomInteger(4);
     Card card = createRandomCard();
     trick.playCard(playerIndex, card, Collections.singletonList(card));
@@ -437,7 +437,7 @@ class TrickTest {
   }
 
   @Test
-  void shouldThrowExceptionIfCardDoesNotFollowSuite() throws Exception {
+  void shouldThrowExceptionIfCardDoesNotFollowSuite() {
     Suite suite = randomEnum(Suite.class);
     Card lead = new Card(suite, randomEnum(PinochleFaceValue.class));
     List<Card> cardsInHand = Arrays.stream(PinochleFaceValue.values())
@@ -466,7 +466,7 @@ class TrickTest {
   }
 
   @Test
-  void shouldThrowExceptionIfCardDoesNotExceedLargestPreviousCard() throws Exception {
+  void shouldThrowExceptionIfCardDoesNotExceedLargestPreviousCard() {
     Suite suite = randomEnum(Suite.class);
     Suite otherSuite = getOffSuite(suite);
     PinochleFaceValue[] faceValues = PinochleFaceValue.values();
@@ -496,7 +496,7 @@ class TrickTest {
   }
 
   @Test
-  void shouldThrowExceptionIfCardIsNotTrumpWhenOutOfLedSuite() throws Exception {
+  void shouldThrowExceptionIfCardIsNotTrumpWhenOutOfLedSuite() {
     Suite suite = getNonTrumpSuite();
     Card lead = new Card(suite, randomEnum(PinochleFaceValue.class));
 
@@ -519,7 +519,7 @@ class TrickTest {
   }
 
   @Test
-  void shouldThrowExceptionIfCardIsNotTrumpWhenOutOfLedSuiteAfterTrumpPlayed() throws Exception {
+  void shouldThrowExceptionIfCardIsNotTrumpWhenOutOfLedSuiteAfterTrumpPlayed() {
     Suite suite = getNonTrumpSuite();
     Suite offSuite = getOffSuite(suite);
     Card lead = new Card(suite, randomEnum(PinochleFaceValue.class));
@@ -543,7 +543,7 @@ class TrickTest {
   }
 
   @Test
-  void shouldThrowExceptionIfTrumpCardDoesNotExceedLargestPreviousTrumpCard() throws Exception {
+  void shouldThrowExceptionIfTrumpCardDoesNotExceedLargestPreviousTrumpCard() {
     Suite suite = getNonTrumpSuite();
     Card lead = new Card(suite, randomEnum(PinochleFaceValue.class));
 
@@ -575,7 +575,7 @@ class TrickTest {
   }
 
   @Test
-  void shouldReportFirstHighCardPlayerIndexAsWinnerForIdenticalPlays() throws Exception {
+  void shouldReportFirstHighCardPlayerIndexAsWinnerForIdenticalPlays() {
     final Suite suite = getNonTrumpSuite();
     final Card lead = new Card(suite, randomEnum(PinochleFaceValue.class));
     trick.playCard(1, lead, Collections.singletonList(lead));
@@ -601,12 +601,61 @@ class TrickTest {
 
   @Test
   void shouldReportHighTrumpPlayerIndexAsWinner() {
-    fail("");
+    final Suite suite = getNonTrumpSuite();
+    final Card lead = new Card(suite, PinochleFaceValue.Ace);
+    trick.playCard(2, lead, Collections.singletonList(lead));
+    assertEquals(lead, trick.getHighCard().get());
+    assertFalse(trick.getHighTrump().isPresent());
+    assertEquals(2, trick.getHighPlayerIndex());
+
+    final Card midTrump = new Card(trump, PinochleFaceValue.King);
+    trick.playCard(3, midTrump, Collections.singletonList(midTrump));
+    assertEquals(lead, trick.getHighCard().get());
+    assertEquals(midTrump, trick.getHighTrump().get());
+    assertEquals(3, trick.getHighPlayerIndex());
+
+    final Card lowTrump = new Card(trump, PinochleFaceValue.Jack);
+    trick.playCard(0, lowTrump, Collections.singletonList(lowTrump));
+    assertEquals(lead, trick.getHighCard().get());
+    assertEquals(lead, trick.getHighCard().get());
+    assertEquals(midTrump, trick.getHighTrump().get());
+    assertEquals(3, trick.getHighPlayerIndex());
+
+    final Card highTrump = new Card(trump, PinochleFaceValue.Ace);
+    trick.playCard(1, highTrump, Collections.singletonList(highTrump));
+    assertEquals(lead, trick.getHighCard().get());
+    assertEquals(lead, trick.getHighCard().get());
+    assertEquals(highTrump, trick.getHighTrump().get());
+    assertEquals(1, trick.getHighPlayerIndex());
   }
 
   @Test
   void shouldReportFirstHighTrumpCardPlayerIndexAsWinnerForIdenticalPlays() {
-    fail("");
+    final Suite suite = getNonTrumpSuite();
+    final Card lead = new Card(suite, PinochleFaceValue.Ace);
+    final Card trumpCard = new Card(trump, PinochleFaceValue.King);
+
+    trick.playCard(2, lead, Collections.singletonList(lead));
+    assertEquals(lead, trick.getHighCard().get());
+    assertFalse(trick.getHighTrump().isPresent());
+    assertEquals(2, trick.getHighPlayerIndex());
+
+    trick.playCard(3, trumpCard, Collections.singletonList(trumpCard));
+    assertEquals(lead, trick.getHighCard().get());
+    assertEquals(trumpCard, trick.getHighTrump().get());
+    assertEquals(3, trick.getHighPlayerIndex());
+
+    trick.playCard(0, trumpCard, Collections.singletonList(trumpCard));
+    assertEquals(lead, trick.getHighCard().get());
+    assertEquals(lead, trick.getHighCard().get());
+    assertEquals(trumpCard, trick.getHighTrump().get());
+    assertEquals(3, trick.getHighPlayerIndex());
+
+    trick.playCard(1, trumpCard, Collections.singletonList(trumpCard));
+    assertEquals(lead, trick.getHighCard().get());
+    assertEquals(lead, trick.getHighCard().get());
+    assertEquals(trumpCard, trick.getHighTrump().get());
+    assertEquals(3, trick.getHighPlayerIndex());
   }
 
   private Suite getNonTrumpSuite() {
